@@ -9,27 +9,21 @@ file { '/etc/motd':
                 Managed by Puppet.\n"
 }
 
-#file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6':
-#  #!TODO: where to get the file from
-#}
+# Install the EPEL6 RPM repository
+# This install path is internal to RAL but alternative public URLs exist.
+#!TODO: this doesn't set the repository priority.  
+#  Either find a way to update this in puppet or switch to a yumrepo declaration
+package { 'epel6':
+  ensure => installed,
+  provider => rpm,
+  source => 'http://yumit.esc.rl.ac.uk/raltools/rhel6/RPMS/epel-tier1-6-1.noarch.rpm'
+}
 
-#!TODO: this could use the EPEL package RPM
-# yumrepo {
-#   baseurl => "http://repos.gridpp.rl.ac.uk/yum/epel/6/x86_64"
-#   cost => "absent"
-#   name => "RAL Tier1 RHEL6 epel mirror"
-#   enabled => 1
-#   gpgcheck => 1
-#   gpgkey => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6"
-#   priority => 20
-# }
 
-# yumrepo {
-#   baseurl => "http://yumit.jc.rl.ac.uk/yum/rhel6"
-#   cost => "absent"
-#   name => "JASMIN RPM repository"
-#   enabled => 1
-#   #gpgcheck => 1
-#   #gpgkey => "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6"
-#   priority => 10
-# }
+yumrepo {
+  baseurl => "http://yumit.jc.rl.ac.uk/yum/rhel6"
+  cost => "absent"
+  name => "JASMIN RPM repository"
+  enabled => 1
+  priority => 10
+}
