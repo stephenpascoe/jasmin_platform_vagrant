@@ -20,10 +20,15 @@ package { 'epel6':
 }
 
 
-yumrepo {
-  baseurl => "http://yumit.jc.rl.ac.uk/yum/rhel6"
-  cost => "absent"
-  name => "JASMIN RPM repository"
-  enabled => 1
-  priority => 10
-}
+#!TODO: this doesn't work yet because yumit.jc is refusing access
+#yumrepo { 'jasmin':
+#  baseurl => "http://yumit.jc.rl.ac.uk/yum/rhel6",
+#  cost => absent,
+#  descr => "JASMIN RPM repository",
+#  enabled => 1,
+#  priority => 10
+#}
+#
+#package { 'jasmin-sci-vm':
+#  ensure => installed
+#}
