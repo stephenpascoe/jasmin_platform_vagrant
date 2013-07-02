@@ -54,15 +54,20 @@ exec { 'yum Group Install':
   command => '/usr/bin/yum -y groupinstall "Development tools"'
 }
   
-#!TODO: this doesn't work yet because yumit.jc is refusing access
-#yumrepo { 'jasmin':
-#  baseurl => "http://yumit.jc.rl.ac.uk/yum/rhel6",
-#  cost => absent,
-#  descr => "JASMIN RPM repository",
-#  enabled => 1,
-#  priority => 10
-#}
+#!NOTE: This will only work if your VM host has the site proxy enabled.
+#    It works on OSX but YMMV
+yumrepo { 'jasmin':
+    baseurl => "http://yumit.jc.rl.ac.uk/yum/rhel6",
+  cost => absent,
+  descr => "JASMIN RPM repository",
+  proxy => "_none_",
+  enabled => 1,
+  gpgcheck => 1,
+  gpgkey => "/etc/pki/rpm-gpg/JASMIN-RPM-GPG-KEY",
+  priority => 10
+}
 
-#package { 'jasmin-sci-vm':
-#  ensure => installed
-#}
+package { 'jasmin-sci-vm':
+  require => 'jasmin',
+  ensure => installed
+}
