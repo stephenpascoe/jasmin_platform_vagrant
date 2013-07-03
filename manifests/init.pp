@@ -31,8 +31,6 @@ proxy=http://wwwcache.rl.ac.uk:8080
 }
 # Install the EPEL6 RPM repository
 # This install path is internal to RAL but alternative public URLs exist.
-#!TODO: this doesn't set the repository priority.  
-#  Either find a way to update this in puppet or switch to a yumrepo declaration
 package { 'epel6':
   ensure => installed,
   provider => rpm,
@@ -49,7 +47,6 @@ exec { 'yum Group Install':
 }
   
 #!NOTE: This will only work if your VM host is inside the firewall
-#    It works on OSX but YMMV
 yumrepo { 'jasmin':
   baseurl => "http://yumit.jc.rl.ac.uk/yum/rhel6",
   cost => absent,
@@ -61,9 +58,6 @@ yumrepo { 'jasmin':
   priority => 10
 }
 
-#package {'netcdf':
-#  ensure => installed
-#}
 package { 'jasmin-sci-vm':
   require => Yumrepo['jasmin'],
   ensure => installed
