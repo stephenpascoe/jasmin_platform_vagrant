@@ -13,7 +13,27 @@ Getting Started
 1. Install VirtualBox_
 2. Install Vagrant_.  You will need a recent version of vagrant.  Tested as working on v1.2.2
 3. Run "vagrant up".  On first execution this will take a long time as it will download a base VM image from the internet.
-4. visit the VM with "vagrant ssh"
+4. Visit the VM with "vagrant ssh".  You will be logged into the VM as user ``vagrant``.
+
+
+Using the VM
+------------
+
+Details of the VM configuration are in ``Vagrantfile`` and the Puppet manifest ``manifests/init.pp``.  By default the VM forwards port 8888 to your host's local port 8888.  To demonstrate this is working try this recipe::
+
+  $ vigrant ssh
+  Last login: Wed Jul  3 15:22:12 2013 from 10.0.2.2
+  Welcome to the JASMIN Analysis Platform.
+                  Managed by Puppet.
+  [vagrant@localhost ~]$ cd /vagrant/ipython/
+  [vagrant@localhost ipython]$ ./start.sh 
+  [NotebookApp] Using existing profile dir: u'/home/vagrant/.ipython/profile_default'
+  [NotebookApp] Serving notebooks from local directory: /vagrant/ipython
+  [NotebookApp] The IPython Notebook is running at: http://0.0.0.0:8888/
+  [NotebookApp] Use Control-C to stop this server and shut down all kernels.
+  [NotebookApp] Using MathJax from CDN: http://cdn.mathjax.org/mathjax/latest/MathJax.js
+
+Now trying visiting http://localhost:8888/
 
 
 TODO

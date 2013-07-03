@@ -63,3 +63,8 @@ package { 'jasmin-sci-vm':
   ensure => installed
 }
 
+
+# In order to run the ipython notebook demo disable the firewall
+service { 'iptables':
+  ensure => stopped,
+  }
