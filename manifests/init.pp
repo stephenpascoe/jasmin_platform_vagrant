@@ -31,10 +31,10 @@ proxy=http://wwwcache.rl.ac.uk:8080
 }
 # Install the EPEL6 RPM repository
 # This install path is internal to RAL but alternative public URLs exist.
-package { 'epel6':
+package { 'epel-tier1':
   ensure => installed,
   provider => rpm,
-  source => 'http://yumit.esc.rl.ac.uk/raltools/rhel6/RPMS/epel-tier1-6-1.noarch.rpm'
+  source => 'http://yumit.esc.rl.ac.uk/raltools/rhel6/RPMS/epel-tier1-6-1.noarch.rpm',
 }
 
 
