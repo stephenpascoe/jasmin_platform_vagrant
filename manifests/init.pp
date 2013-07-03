@@ -10,10 +10,6 @@ file { '/etc/motd':
                 Managed by Puppet.\n"
 }
 
-file { '/etc/pki/rpm-gpg/JASMIN-RPM-GPG-KEY':
-  target => '/vagrant/rpm-gpg/JASMIN-RPM-GPG-KEY'
-}
-
 # This is an adapted version of the default content with the RAL proxy
 # added.
 file { '/etc/yum.conf':
@@ -44,39 +40,32 @@ package { 'epel6':
 }
 
 
-# Test installing a non-local RPM
-package { 'lynx':
-  ensure => installed,
-  require => File['/etc/yum.conf']
-}
-
 # Unless we itemise each development package we have no option but to use
 # exec to install this group.
-#exec { 'yum Group Install':
-#  require => File['/etc/yum.conf'],
-#  unless => '/usr/bin/yum grouplist "Development tools" | /bin/grep "^Installed Groups"',
-#  command => '/usr/bin/yum -y groupinstall "Development tools"'
-#}
+exec { 'yum Group Install':
+  require => File['/etc/yum.conf'],
+  unless => '/usr/bin/yum grouplist "Development tools" | /bin/grep "^Installed Groups"',
+  command => '/usr/bin/yum -y groupinstall "Development tools"'
+}
   
-  #!NOTE: This will only work if your VM host has the site proxy enabled.
-  #    It works on OSX but YMMV
+#!NOTE: This will only work if your VM host is inside the firewall
+#    It works on OSX but YMMV
 yumrepo { 'jasmin':
-  require => File["/etc/pki/rpm-gpg/JASMIN-RPM-GPG-KEY"],
-
   baseurl => "http://yumit.jc.rl.ac.uk/yum/rhel6",
   cost => absent,
   descr => "JASMIN RPM repository",
   proxy => "_none_",
   enabled => 1,
   gpgcheck => 1,
-  gpgkey => "/etc/pki/rpm-gpg/JASMIN-RPM-GPG-KEY",
+  gpgkey => "file:///vagrant/rpm-gpg/JASMIN-RPM-GPG-KEY",
   priority => 10
 }
 
-package {'netcdf':
-  ensure => installed
-}
-#package { 'jasmin-sci-vm':
-#  require => 'jasmin',
+#package {'netcdf':
 #  ensure => installed
 #}
+package { 'jasmin-sci-vm':
+  require => Yumrepo['jasmin'],
+  ensure => installed
+}
+
