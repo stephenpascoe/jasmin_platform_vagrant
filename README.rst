@@ -12,8 +12,9 @@ Getting Started
 
 1. Install VirtualBox_
 2. Install Vagrant_.  You will need a recent version of vagrant.  Tested as working on v1.2.2
-3. Run "vagrant up".  On first execution this will take a long time as it will download a base VM image from the internet.
-4. Visit the VM with "vagrant ssh".  You will be logged into the VM as user ``vagrant``.
+3. Clone this repository.  E.g. ``git clone https://github.com/stephenpascoe/jasmin_platform_vagrant``.
+4. From the repository run "vagrant up".  On first execution this will take a long time as it will download a base VM image from the internet.
+5. Visit the VM with "vagrant ssh".  You will be logged into the VM as user ``vagrant``.
 
 
 Using the VM
