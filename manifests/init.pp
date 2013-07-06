@@ -29,14 +29,6 @@ distroverpkg=centos-release
 proxy=http://wwwcache.rl.ac.uk:8080
 "
 }
-# Install the EPEL6 RPM repository
-# This install path is internal to RAL but alternative public URLs exist.
-package { 'epel-tier1':
-  ensure => installed,
-  provider => rpm,
-  source => 'http://yumit.esc.rl.ac.uk/raltools/rhel6/RPMS/epel-tier1-6-1.noarch.rpm',
-}
-
 
 # Unless we itemise each development package we have no option but to use
 # exec to install this group.
@@ -45,10 +37,19 @@ exec { 'yum Group Install':
   unless => '/usr/bin/yum grouplist "Development tools" | /bin/grep "^Installed Groups"',
   command => '/usr/bin/yum -y groupinstall "Development tools"'
 }
-  
-#!NOTE: This will only work if your VM host is inside the firewall
-yumrepo { 'jasmin':
-  baseurl => "http://yumit.jc.rl.ac.uk/yum/rhel6",
+
+yumrepo { 'epel':
+  baseurl => 'http://mirrors.ukfast.co.uk/sites/dl.fedoraproject.org/pub/epel/6/x86_64',
+  cost => absent,
+  descr => "Public EPEL6 Repository",
+  enabled => 1,
+  gpgcheck => 1,
+  gpgkey => "file:///vagrant/rpm-gpg/RPM-GPG-KEY-EPEL-6",
+  require => File['/etc/yum.conf'],
+}
+
+yumrepo { 'jasmin_platform':
+  baseurl => "http://dist.ceda.ac.uk/yumrepo",
   cost => absent,
   descr => "JASMIN RPM repository",
   proxy => "_none_",
@@ -59,7 +60,7 @@ yumrepo { 'jasmin':
 }
 
 package { 'jasmin-sci-vm':
-  require => Yumrepo['jasmin'],
+  require => [Yumrepo['jasmin_platform'], Yumrepo['epel']],
   ensure => installed
 }
 

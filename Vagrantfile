@@ -50,7 +50,7 @@ Vagrant.configure("2") do |config|
 
   # Enable provisioning with Puppet stand alone.
   config.vm.provision :puppet do |puppet|
-    puppet.options = '--verbose'
+    puppet.options = '--verbose --debug'
     puppet.manifests_path = "./manifests"
     puppet.manifest_file  = "init.pp"
   end
