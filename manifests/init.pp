@@ -86,3 +86,8 @@ package { 'jasmin-sci-vm':
 service { 'iptables':
   ensure => stopped,
 }
+
+# Remove the initial user from the base box
+user { 'veewee':
+  ensure => 'absent',
+  }
