@@ -4,8 +4,7 @@
 
 # Set the http proxy here so that your VM can access the RPM repositories
 # If you are not behind an HTTP proxy set $http_proxy to "_none_"
-$http_proxy = "http://wwwcache.rl.ac.uk:8080"
-# $http_proxy = "_none_"
+$http_proxy = "_none_"
 
 # Select your EPEL mirror
 $epel_rpm = 'http://mirrors.ukfast.co.uk/sites/dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm'
@@ -22,7 +21,7 @@ File { owner => 0, group => 0, mode => 0644 }
  
 file { '/etc/motd':
   content => "Welcome to the JASMIN Analysis Platform.
-                Managed by Puppet.\n"
+http://proj.badc.rl.ac.uk/cedaservices/wiki/JASMIN/AnalysisPlatform\n"
 }
 
 if $http_proxy != '_none_' {
@@ -73,11 +72,16 @@ package { 'jasmin-sci-vm':
 
 # Unless we itemise each development package we have no option but to use
 # exec to install this group.
-#exec { 'yum Group Install':
-#  require => [File['/etc/yum.conf'], Package['epel-release-6-8']],
-#  unless => '/usr/bin/yum grouplist "Development tools" | /bin/grep "^Installed Groups"',
-#  command => '/usr/bin/yum -y groupinstall "Development tools"'
-#}
+exec { 'yum groupinstall Development tools':
+  require => [File['/etc/yum.conf'], Package['epel-release-6-8']],
+  unless => '/usr/bin/yum grouplist "Development tools" | /bin/grep "^Installed Groups"',
+  command => '/usr/bin/yum -y groupinstall "Development tools"'
+}
+exec { 'yum groupinstall Desktop':
+  require => [File['/etc/yum.conf'], Package['epel-release-6-8']],
+  unless => '/usr/bin/yum grouplist "Desktop" | /bin/grep "^Installed Groups"',
+  command => '/usr/bin/yum -y groupinstall "Desktop"'
+}
 
 
 
